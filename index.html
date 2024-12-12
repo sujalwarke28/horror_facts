@@ -1,208 +1,241 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Random Horror Facts</title>
+    <title>Creepy Facts</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #121212;
-            color: #ffffff;
+            background-color: #1f0550;
+            color: #f0f0f0;
+            font-family: 'Arial', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
+            overflow: hidden;
         }
 
-        .container {
-            text-align: center;
-            max-width: 600px;
+        .card-container {
+            perspective: 1000px;
+        }
+
+        .card {
+            width: 600px;
+            height: 300px;
+            background-color: #020846;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+            cursor: pointer;
+        }
+
+        .card.flip {
+            transform: rotateY(180deg);
+        }
+
+        .card-front,
+        .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             padding: 20px;
-            background-color: #1e1e1e;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            box-sizing: border-box;
         }
 
-        .fact-display {
-            margin: 20px 0;
-            font-size: 1.2em;
+        .card-front {
+            background-color: #444;
+        }
+
+        .card-back {
+            background-color: #555;
+            transform: rotateY(180deg);
         }
 
         button {
+            margin-top: 20px;
             padding: 10px 20px;
-            font-size: 1em;
-            color: #121212;
-            background-color: #ffffff;
+            background-color: #ff5722;
             border: none;
             border-radius: 5px;
+            color: #fff;
+            font-size: 12px;
             cursor: pointer;
             transition: background-color 0.3s;
         }
 
         button:hover {
-            background-color: #f0f0f0;
+            background-color: #e64a19;
         }
     </style>
 </head>
+
 <body>
-    <div class="container">
-        <h1>Random Horror Fact</h1>
-        <div id="fact-display" class="fact-display">
-            Click the button to see a horror fact!
+    <div class="card-container">
+        <div class="card" id="factCard">
+            <div class="card-front" id="factFront">
+                Click to reveal a creepy fact!
+            </div>
+            <div class="card-back" id="factBack">
+                "description": "In 1959, nine experienced hikers died mysteriously in the Ural Mountains. Their tent was
+                found ripped open from the inside, and some of the bodies had strange injuries, like missing eyes and
+                tongues."
+                "description": "June and Jennifer Gibbons, known as the Silent Twins, only communicated with each other.
+                They believed one had to die for the other to live a normal life. Jennifer died under mysterious
+                circumstances, and June went on to live a relatively normal life."
+                "description": "Elizabeth Short, known as the Black Dahlia, was found murdered in Los Angeles in 1947.
+                Her body was mutilated and posed, and the case remains unsolved."
+                "description": "In 1922, a family of six was brutally murdered on their farm in Germany. The killer
+                lived in their house for days after the murders, eating meals and tending to the livestock."
+                "description": "Sarah Winchester, widow of the firearm magnate, built a sprawling mansion with
+                staircases leading to nowhere and doors that open into walls."
+                "description": "In 1872, the ship Mary Celeste was found adrift in the Atlantic Ocean with no crew
+                aboard, despite being in good condition and having ample provisions."
+                "description": "In the early 1800s, the Bell family of Tennessee was reportedly haunted by a malevolent
+                spirit known as the Bell Witch, who tormented them for years."
+                "description": "In 1974, Ronald DeFeo Jr. murdered his family in their home in Amityville, New York. The
+                subsequent owners claimed the house was haunted by malevolent spirits."
+                "description": "In the 1960s, residents of Point Pleasant, West Virginia, reported sightings of a large,
+                winged creature with glowing red eyes, known as the Mothman."
+                "description": "Legend has it that a creature known as the Jersey Devil, with a horse-like head, bat
+                wings, and hooves, haunts the Pine Barrens of New Jersey."
+                "description": "The Chupacabra is a legendary creature said to attack livestock, particularly goats, and
+                drain their blood, with sightings reported in the Americas."
+                "description": "In the 12th century, two children with green skin reportedly appeared in the village of
+                Woolpit, England, speaking an unknown language."
+                "description": "The Curse of the Pharaohs is a supposed curse believed to be cast upon anyone who
+                disturbs the mummy of an Ancient Egyptian, especially a pharaoh."
+                "description": "In Irish folklore, the Banshee is a female spirit whose wailing warns of an impending
+                death in the family."
+                "description": "The Headless Horseman is a legendary figure who rides a horse without a head, often
+                associated with the American tale of Sleepy Hollow."
+                "description": "The Vanishing Hitchhiker is an urban legend about a hitchhiker who disappears without a
+                trace, often leaving behind a chilling reminder of their presence."
+                "description": "The Slender Man is a fictional supernatural character that originated as a creepypasta
+                meme, depicted as a tall, faceless figure in a black suit."
+                "description": "The Rake is a creepypasta creature described as a humanoid with pale skin and long
+                claws, known for stalking and tormenting its victims."
+                "description": "In the late 1970s, a family in Enfield, England, reported being haunted by a
+                poltergeist, with claims of furniture moving and strange voices."
+                <!-- Fact description will be inserted here -->
+            </div>
         </div>
-        <button id="new-fact-button">Get New Fact</button>
     </div>
+    <button onclick="shuffleFacts()">Shuffle Facts</button>
+
     <script>
-        const horrorFacts = [
+        const facts = [
             {
-                "id": 1,
-                "category": "paranormal",
-                "fact": "In 1922, the crew of the Dutch cargo ship SS Ourang Medan allegedly all died under mysterious circumstances, with their faces frozen in expressions of pure terror.",
-                "verified": false,
-                "year": 1922
+                "fact": "The Dyatlov Pass Incident",
+                "description": "In 1959, nine experienced hikers died mysteriously in the Ural Mountains. Their tent was found ripped open from the inside, and some of the bodies had strange injuries, like missing eyes and tongues."
             },
             {
-                "id": 2,
-                "category": "psychological",
-                "fact": "Scientists have documented cases of Fatal Familial Insomnia, a rare genetic disease where people completely lose the ability to sleep, leading to hallucinations and eventual death.",
-                "verified": true,
-                "year": 1984
+                "fact": "The Silent Twins",
+                "description": "June and Jennifer Gibbons, known as the Silent Twins, only communicated with each other. They believed one had to die for the other to live a normal life. Jennifer died under mysterious circumstances, and June went on to live a relatively normal life."
             },
             {
-                "id": 3,
-                "category": "historical",
-                "fact": "The Paris Catacombs contain the remains of over 6 million people, and there are over 180 miles of unmapped tunnels where people have disappeared.",
-                "verified": true,
-                "year": 1785
+                "fact": "The Black Dahlia",
+                "description": "Elizabeth Short, known as the Black Dahlia, was found murdered in Los Angeles in 1947. Her body was mutilated and posed, and the case remains unsolved."
             },
             {
-                "id": 4,
-                "category": "urban legend",
-                "fact": "The legend of the Slender Man, a tall, faceless figure in a black suit, has been linked to several real-life crimes and disappearances.",
-                "verified": false,
-                "year": 2009
+                "fact": "The Hinterkaifeck Murders",
+                "description": "In 1922, a family of six was brutally murdered on their farm in Germany. The killer lived in their house for days after the murders, eating meals and tending to the livestock."
             },
             {
-                "id": 5,
-                "category": "paranormal",
-                "fact": "The Winchester Mystery House in California is a labyrinthine mansion with staircases leading to nowhere, built to confuse ghosts.",
-                "verified": true,
-                "year": 1884
+                "fact": "The Winchester Mystery House",
+                "description": "Sarah Winchester, widow of the firearm magnate, built a sprawling mansion with staircases leading to nowhere and doors that open into walls."
             },
             {
-                "id": 6,
-                "category": "psychological",
-                "fact": "The Capgras delusion is a psychiatric disorder where a person believes a loved one has been replaced by an identical impostor.",
-                "verified": true,
-                "year": 1923
+                "fact": "The Mary Celeste",
+                "description": "In 1872, the ship Mary Celeste was found adrift in the Atlantic Ocean with no crew aboard, despite being in good condition and having ample provisions."
             },
             {
-                "id": 7,
-                "category": "historical",
-                "fact": "In the 16th century, Elizabeth Báthory, known as the 'Blood Countess', allegedly tortured and killed hundreds of young women.",
-                "verified": true,
-                "year": 1610
+                "fact": "The Bell Witch",
+                "description": "In the early 1800s, the Bell family of Tennessee was reportedly haunted by a malevolent spirit known as the Bell Witch, who tormented them for years."
             },
             {
-                "id": 8,
-                "category": "paranormal",
-                "fact": "The Bell Witch haunting in Tennessee is one of the most famous American ghost stories, involving a poltergeist tormenting a family.",
-                "verified": true,
-                "year": 1817
+                "fact": "The Amityville Horror",
+                "description": "In 1974, Ronald DeFeo Jr. murdered his family in their home in Amityville, New York. The subsequent owners claimed the house was haunted by malevolent spirits."
             },
             {
-                "id": 9,
-                "category": "urban legend",
-                "fact": "The story of Bloody Mary, a ghost that appears in mirrors when her name is chanted, has terrified children for generations.",
-                "verified": false,
-                "year": 1978
+                "fact": "The Mothman",
+                "description": "In the 1960s, residents of Point Pleasant, West Virginia, reported sightings of a large, winged creature with glowing red eyes, known as the Mothman."
             },
             {
-                "id": 10,
-                "category": "psychological",
-                "fact": "Cotard's syndrome is a rare mental illness where sufferers believe they are dead or do not exist.",
-                "verified": true,
-                "year": 1880
+                "fact": "The Jersey Devil",
+                "description": "Legend has it that a creature known as the Jersey Devil, with a horse-like head, bat wings, and hooves, haunts the Pine Barrens of New Jersey."
             },
             {
-                "id": 11,
-                "category": "historical",
-                "fact": "The Dyatlov Pass incident involved nine Russian hikers who died under mysterious circumstances in the Ural Mountains.",
-                "verified": true,
-                "year": 1959
+                "fact": "The Chupacabra",
+                "description": "The Chupacabra is a legendary creature said to attack livestock, particularly goats, and drain their blood, with sightings reported in the Americas."
             },
             {
-                "id": 12,
-                "category": "paranormal",
-                "fact": "The Amityville Horror house is said to be haunted by the spirits of a family murdered there in 1974.",
-                "verified": false,
-                "year": 1974
+                "fact": "The Green Children of Woolpit",
+                "description": "In the 12th century, two children with green skin reportedly appeared in the village of Woolpit, England, speaking an unknown language."
             },
             {
-                "id": 13,
-                "category": "urban legend",
-                "fact": "The Chupacabra is a legendary creature said to attack livestock, leaving behind drained carcasses.",
-                "verified": false,
-                "year": 1995
+                "fact": "The Curse of the Pharaohs",
+                "description": "The Curse of the Pharaohs is a supposed curse believed to be cast upon anyone who disturbs the mummy of an Ancient Egyptian, especially a pharaoh."
             },
             {
-                "id": 14,
-                "category": "psychological",
-                "fact": "The phenomenon of sleep paralysis can cause terrifying hallucinations of shadowy figures.",
-                "verified": true,
-                "year": 1928
+                "fact": "The Banshee",
+                "description": "In Irish folklore, the Banshee is a female spirit whose wailing warns of an impending death in the family."
             },
             {
-                "id": 15,
-                "category": "historical",
-                "fact": "The Salem witch trials led to the execution of 20 people accused of witchcraft in colonial Massachusetts.",
-                "verified": true,
-                "year": 1692
+                "fact": "The Headless Horseman",
+                "description": "The Headless Horseman is a legendary figure who rides a horse without a head, often associated with the American tale of Sleepy Hollow."
             },
             {
-                "id": 16,
-                "category": "paranormal",
-                "fact": "The Enfield Poltergeist case involved a family in London experiencing violent paranormal activity.",
-                "verified": true,
-                "year": 1977
+                "fact": "The Vanishing Hitchhiker",
+                "description": "The Vanishing Hitchhiker is an urban legend about a hitchhiker who disappears without a trace, often leaving behind a chilling reminder of their presence."
             },
             {
-                "id": 17,
-                "category": "urban legend",
-                "fact": "The legend of the Jersey Devil, a creature said to inhabit the Pine Barrens of New Jersey, dates back to the 18th century.",
-                "verified": false,
-                "year": 1735
+                "fact": "The Slender Man",
+                "description": "The Slender Man is a fictional supernatural character that originated as a creepypasta meme, depicted as a tall, faceless figure in a black suit."
             },
             {
-                "id": 18,
-                "category": "psychological",
-                "fact": "The Mandela Effect is a phenomenon where a large group of people remember an event differently from how it occurred.",
-                "verified": true,
-                "year": 2009
+                "fact": "The Rake",
+                "description": "The Rake is a creepypasta creature described as a humanoid with pale skin and long claws, known for stalking and tormenting its victims."
             },
             {
-                "id": 19,
-                "category": "historical",
-                "fact": "The Black Death, one of the deadliest pandemics in history, killed an estimated 75-200 million people in the 14th century.",
-                "verified": true,
-                "year": 1347
+                "fact": "The Black-Eyed Children",
+                "description": "The Black-Eyed Children are an urban legend of paranormal creatures resembling children with black eyes, who appear on doorsteps and ask for entry."
             },
             {
-                "id": 20,
-                "category": "paranormal",
-                "fact": "The Island of the Dolls in Mexico is covered with hundreds of dolls, believed to be haunted by the spirit of a drowned girl.",
-                "verified": true,
-                "year": 1950
+                "fact": "The Enfield Poltergeist",
+                "description": "In the late 1970s, a family in Enfield, England, reported being haunted by a poltergeist, with claims of furniture moving and strange voices."
             }
+            // Add the rest of the facts here...
         ];
 
-        document.getElementById('new-fact-button').addEventListener('click', () => {
-            const randomIndex = Math.floor(Math.random() * horrorFacts.length);
-            const fact = horrorFacts[randomIndex].fact;
-            document.getElementById('fact-display').innerText = fact;
+        let currentFactIndex = 0;
+
+        const factCard = document.getElementById('factCard');
+        const factBack = document.getElementById('factBack');
+
+        factCard.addEventListener('click', () => {
+            factCard.classList.toggle('flip');
+            if (factCard.classList.contains('flip')) {
+                factBack.innerHTML = `<strong>${facts[currentFactIndex].fact}:</strong> ${facts[currentFactIndex].description}`;
+            }
         });
+
+        function shuffleFacts() {
+            currentFactIndex = Math.floor(Math.random() * facts.length);
+            if (factCard.classList.contains('flip')) {
+                factCard.classList.remove('flip');
+            }
+        }
     </script>
 </body>
+
 </html>
