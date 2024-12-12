@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Horror Facts</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 600px;
+            padding: 20px;
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .fact-display {
+            margin: 20px 0;
+            font-size: 1.2em;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 1em;
+            color: #121212;
+            background-color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Random Horror Fact</h1>
+        <div id="fact-display" class="fact-display">
+            Click the button to see a horror fact!
+        </div>
+        <button id="new-fact-button">Get New Fact</button>
+    </div>
+    <script>
+        const horrorFacts = [
+            {
+                "id": 1,
+                "category": "paranormal",
+                "fact": "In 1922, the crew of the Dutch cargo ship SS Ourang Medan allegedly all died under mysterious circumstances, with their faces frozen in expressions of pure terror.",
+                "verified": false,
+                "year": 1922
+            },
+            {
+                "id": 2,
+                "category": "psychological",
+                "fact": "Scientists have documented cases of Fatal Familial Insomnia, a rare genetic disease where people completely lose the ability to sleep, leading to hallucinations and eventual death.",
+                "verified": true,
+                "year": 1984
+            },
+            {
+                "id": 3,
+                "category": "historical",
+                "fact": "The Paris Catacombs contain the remains of over 6 million people, and there are over 180 miles of unmapped tunnels where people have disappeared.",
+                "verified": true,
+                "year": 1785
+            },
+            {
+                "id": 4,
+                "category": "urban legend",
+                "fact": "The legend of the Slender Man, a tall, faceless figure in a black suit, has been linked to several real-life crimes and disappearances.",
+                "verified": false,
+                "year": 2009
+            },
+            {
+                "id": 5,
+                "category": "paranormal",
+                "fact": "The Winchester Mystery House in California is a labyrinthine mansion with staircases leading to nowhere, built to confuse ghosts.",
+                "verified": true,
+                "year": 1884
+            },
+            {
+                "id": 6,
+                "category": "psychological",
+                "fact": "The Capgras delusion is a psychiatric disorder where a person believes a loved one has been replaced by an identical impostor.",
+                "verified": true,
+                "year": 1923
+            },
+            {
+                "id": 7,
+                "category": "historical",
+                "fact": "In the 16th century, Elizabeth Báthory, known as the 'Blood Countess', allegedly tortured and killed hundreds of young women.",
+                "verified": true,
+                "year": 1610
+            },
+            {
+                "id": 8,
+                "category": "paranormal",
+                "fact": "The Bell Witch haunting in Tennessee is one of the most famous American ghost stories, involving a poltergeist tormenting a family.",
+                "verified": true,
+                "year": 1817
+            },
+            {
+                "id": 9,
+                "category": "urban legend",
+                "fact": "The story of Bloody Mary, a ghost that appears in mirrors when her name is chanted, has terrified children for generations.",
+                "verified": false,
+                "year": 1978
+            },
+            {
+                "id": 10,
+                "category": "psychological",
+                "fact": "Cotard's syndrome is a rare mental illness where sufferers believe they are dead or do not exist.",
+                "verified": true,
+                "year": 1880
+            },
+            {
+                "id": 11,
+                "category": "historical",
+                "fact": "The Dyatlov Pass incident involved nine Russian hikers who died under mysterious circumstances in the Ural Mountains.",
+                "verified": true,
+                "year": 1959
+            },
+            {
+                "id": 12,
+                "category": "paranormal",
+                "fact": "The Amityville Horror house is said to be haunted by the spirits of a family murdered there in 1974.",
+                "verified": false,
+                "year": 1974
+            },
+            {
+                "id": 13,
+                "category": "urban legend",
+                "fact": "The Chupacabra is a legendary creature said to attack livestock, leaving behind drained carcasses.",
+                "verified": false,
+                "year": 1995
+            },
+            {
+                "id": 14,
+                "category": "psychological",
+                "fact": "The phenomenon of sleep paralysis can cause terrifying hallucinations of shadowy figures.",
+                "verified": true,
+                "year": 1928
+            },
+            {
+                "id": 15,
+                "category": "historical",
+                "fact": "The Salem witch trials led to the execution of 20 people accused of witchcraft in colonial Massachusetts.",
+                "verified": true,
+                "year": 1692
+            },
+            {
+                "id": 16,
+                "category": "paranormal",
+                "fact": "The Enfield Poltergeist case involved a family in London experiencing violent paranormal activity.",
+                "verified": true,
+                "year": 1977
+            },
+            {
+                "id": 17,
+                "category": "urban legend",
+                "fact": "The legend of the Jersey Devil, a creature said to inhabit the Pine Barrens of New Jersey, dates back to the 18th century.",
+                "verified": false,
+                "year": 1735
+            },
+            {
+                "id": 18,
+                "category": "psychological",
+                "fact": "The Mandela Effect is a phenomenon where a large group of people remember an event differently from how it occurred.",
+                "verified": true,
+                "year": 2009
+            },
+            {
+                "id": 19,
+                "category": "historical",
+                "fact": "The Black Death, one of the deadliest pandemics in history, killed an estimated 75-200 million people in the 14th century.",
+                "verified": true,
+                "year": 1347
+            },
+            {
+                "id": 20,
+                "category": "paranormal",
+                "fact": "The Island of the Dolls in Mexico is covered with hundreds of dolls, believed to be haunted by the spirit of a drowned girl.",
+                "verified": true,
+                "year": 1950
+            }
+        ];
+
+        document.getElementById('new-fact-button').addEventListener('click', () => {
+            const randomIndex = Math.floor(Math.random() * horrorFacts.length);
+            const fact = horrorFacts[randomIndex].fact;
+            document.getElementById('fact-display').innerText = fact;
+        });
+    </script>
+</body>
+</html>
